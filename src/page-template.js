@@ -59,6 +59,7 @@ const generateTeam = team => {
     };
 
     const html = [];
+    // Arrays- map, reduce, filter, forEach, for loop, 
 
     html.push(team
         .filter(employee => employee.getRole() === "Manager")
