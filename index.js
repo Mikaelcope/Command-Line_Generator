@@ -38,7 +38,7 @@ const menuQuestions = [{
     type: "list",
     message: "What next",
     name: "nextAction",
-    choices: ["Add engineer", "Add Intern", "Finish team"]
+    choices: ["Add engineer", "Add intern", "Finish team"]
 }]
 
 const engineerQuestions = [
@@ -101,16 +101,14 @@ inquirer.prompt(managerQuestions).then(answers => {
 })
 
 const mainMenu = () => {
-    inquirer.prompt(menuQuestions).then(answers => {
+    inquirer.prompt(menuQuestions).then(async (answers) => {
         if(answers.nextAction === 'Add engineer'){
-            const engineerOBJ = engineer()
-            team.push(engineerOBJ)
-            mainMenu()
+            engineer()
+        
         }   
         else if(answers.nextAction === 'Add intern') {
-            const internOBJ = intern()
-            team.push(internOBJ)
-            mainMenu()
+           intern()
+          
         }   
         else if(answers.nextAction === 'Finish team'){
             let teamHTML = render(team)
@@ -122,14 +120,20 @@ const mainMenu = () => {
 }
 
 const writeToFile = (html) => {
-    fs.writeFile('team.html', html,)
+    fs.writeFile('team.html', html, function (error){
+        if(error) console.log(error)
+        console.log("file created successfully")
+    })
 }
 
 const engineer = () => {
     inquirer.prompt(engineerQuestions).then(answers => {
         let {engineer_name, engineer_ID, engineer_email, engineer_gitHub}   = answers
         let engineerOBJ = new Engineer(engineer_name, engineer_ID, engineer_email, engineer_gitHub)
-        return engineerOBJ
+        // return engineerOBJ
+
+        team.push(engineerOBJ)
+        mainMenu()
     })
 }
 
@@ -137,7 +141,9 @@ const intern = () => {
     inquirer.prompt(internQuestions).then(answers => {
         let {intern_name, intern_ID, intern_email, intern_school}   = answers
         let internOBJ = new Intern(intern_name, intern_ID, intern_email, intern_school)
-        return internOBJ
+        // return internOBJ
+        team.push(internOBJ)
+        mainMenu()
     })
 }
 
